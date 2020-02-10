@@ -41,18 +41,18 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * @author Mark Paluch
  * @since 2.1.0
  */
-@Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(RedisConnectionFactory.class)
-@ConditionalOnBean(RedisConnectionFactory.class)
-@ConditionalOnEnabledHealthIndicator("redis")
-@AutoConfigureAfter({ RedisAutoConfiguration.class, RedisReactiveHealthContributorAutoConfiguration.class })
-public class RedisHealthContributorAutoConfiguration
-		extends CompositeHealthContributorConfiguration<RedisHealthIndicator, RedisConnectionFactory> {
-
-	@Bean
-	@ConditionalOnMissingBean(name = { "redisHealthIndicator", "redisHealthContributor" })
-	public HealthContributor redisHealthContributor(Map<String, RedisConnectionFactory> redisConnectionFactories) {
-		return createContributor(redisConnectionFactories);
-	}
-
-}
+//@Configuration(proxyBeanMethods = false)
+//@ConditionalOnClass(RedisConnectionFactory.class)
+//@ConditionalOnBean(RedisConnectionFactory.class)
+//@ConditionalOnEnabledHealthIndicator("redis")
+//@AutoConfigureAfter({ RedisAutoConfiguration.class, RedisReactiveHealthContributorAutoConfiguration.class })
+//public class RedisHealthContributorAutoConfiguration
+//		extends CompositeHealthContributorConfiguration<RedisHealthIndicator, RedisConnectionFactory> {
+//
+//	@Bean
+//	@ConditionalOnMissingBean(name = { "redisHealthIndicator", "redisHealthContributor" })
+//	public HealthContributor redisHealthContributor(Map<String, RedisConnectionFactory> redisConnectionFactories) {
+//		return createContributor(redisConnectionFactories);
+//	}
+//
+//}

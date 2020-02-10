@@ -136,19 +136,19 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 	}
 
 	private ServerTransport<CloseableChannel> createWebSocketTransport() {
-		if (this.resourceFactory != null) {
-			HttpServer httpServer = HttpServer.create().tcpConfiguration((tcpServer) -> tcpServer
-					.runOn(this.resourceFactory.getLoopResources()).addressSupplier(this::getListenAddress));
-			return WebsocketServerTransport.create(httpServer);
-		}
+//		if (this.resourceFactory != null) {
+//			HttpServer httpServer = HttpServer.create().tcpConfiguration((tcpServer) -> tcpServer
+//					.runOn(this.resourceFactory.getLoopResources()).addressSupplier(this::getListenAddress));
+//			return WebsocketServerTransport.create(httpServer);
+//		}
 		return WebsocketServerTransport.create(getListenAddress());
 	}
 
 	private ServerTransport<CloseableChannel> createTcpTransport() {
 		if (this.resourceFactory != null) {
-			TcpServer tcpServer = TcpServer.create().runOn(this.resourceFactory.getLoopResources())
-					.addressSupplier(this::getListenAddress);
-			return TcpServerTransport.create(tcpServer);
+//			TcpServer tcpServer = TcpServer.create().runOn(this.resourceFactory.getLoopResources())
+//					.addressSupplier(this::getListenAddress);
+//			return TcpServerTransport.create(tcpServer);
 		}
 		return TcpServerTransport.create(getListenAddress());
 	}

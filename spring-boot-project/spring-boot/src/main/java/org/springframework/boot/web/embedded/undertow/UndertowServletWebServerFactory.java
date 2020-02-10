@@ -62,12 +62,12 @@ import io.undertow.servlet.api.MimeMapping;
 import io.undertow.servlet.api.ServletContainerInitializerInfo;
 import io.undertow.servlet.api.ServletStackTraces;
 import io.undertow.servlet.core.DeploymentImpl;
+//import org.xnio.OptionMap;
 import io.undertow.servlet.handlers.DefaultServlet;
 import io.undertow.servlet.util.ImmediateInstanceFactory;
-import org.xnio.OptionMap;
-import org.xnio.Options;
-import org.xnio.Xnio;
-import org.xnio.XnioWorker;
+//import org.xnio.Options;
+//import org.xnio.Xnio;
+//import org.xnio.XnioWorker;
 
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.MimeMappings.Mapping;
@@ -250,7 +250,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 	private void customizeSsl(Builder builder) {
 		new SslBuilderCustomizer(getPort(), getAddress(), getSsl(), getSslStoreProvider()).customize(builder);
 		if (getHttp2() != null) {
-			builder.setServerOption(UndertowOptions.ENABLE_HTTP2, getHttp2().isEnabled());
+//			builder.setServerOption(UndertowOptions.ENABLE_HTTP2, getHttp2().isEnabled());
 		}
 	}
 
@@ -305,21 +305,21 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 	}
 
 	private void configureAccessLog(DeploymentInfo deploymentInfo) {
-		try {
-			createAccessLogDirectoryIfNecessary();
-			XnioWorker worker = createWorker();
-			String prefix = (this.accessLogPrefix != null) ? this.accessLogPrefix : "access_log.";
-			DefaultAccessLogReceiver accessLogReceiver = new DefaultAccessLogReceiver(worker, this.accessLogDirectory,
-					prefix, this.accessLogSuffix, this.accessLogRotate);
-			EventListener listener = new AccessLogShutdownListener(worker, accessLogReceiver);
-			deploymentInfo.addListener(
-					new ListenerInfo(AccessLogShutdownListener.class, new ImmediateInstanceFactory<>(listener)));
-			deploymentInfo
-					.addInitialHandlerChainWrapper((handler) -> createAccessLogHandler(handler, accessLogReceiver));
-		}
-		catch (IOException ex) {
-			throw new IllegalStateException("Failed to create AccessLogHandler", ex);
-		}
+//		try {
+//			createAccessLogDirectoryIfNecessary();
+//			XnioWorker worker = createWorker();
+//			String prefix = (this.accessLogPrefix != null) ? this.accessLogPrefix : "access_log.";
+//			DefaultAccessLogReceiver accessLogReceiver = new DefaultAccessLogReceiver(worker, this.accessLogDirectory,
+//					prefix, this.accessLogSuffix, this.accessLogRotate);
+//			EventListener listener = new AccessLogShutdownListener(worker, accessLogReceiver);
+//			deploymentInfo.addListener(
+//					new ListenerInfo(AccessLogShutdownListener.class, new ImmediateInstanceFactory<>(listener)));
+//			deploymentInfo
+//					.addInitialHandlerChainWrapper((handler) -> createAccessLogHandler(handler, accessLogReceiver));
+//		}
+//		catch (IOException ex) {
+//			throw new IllegalStateException("Failed to create AccessLogHandler", ex);
+//		}
 	}
 
 	private AccessLogHandler createAccessLogHandler(HttpHandler handler, AccessLogReceiver accessLogReceiver) {
@@ -335,10 +335,10 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		}
 	}
 
-	private XnioWorker createWorker() throws IOException {
-		Xnio xnio = Xnio.getInstance(Undertow.class.getClassLoader());
-		return xnio.createWorker(OptionMap.builder().set(Options.THREAD_DAEMON, true).getMap());
-	}
+//	private XnioWorker createWorker() throws IOException {
+//		Xnio xnio = Xnio.getInstance(Undertow.class.getClassLoader());
+//		return xnio.createWorker(OptionMap.builder().set(Options.THREAD_DAEMON, true).getMap());
+//	}
 
 	private void addLocaleMappings(DeploymentInfo deployment) {
 		getLocaleCharsetMappings().forEach(
@@ -660,36 +660,36 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 	}
 
-	private static class AccessLogShutdownListener implements ServletContextListener {
-
-		private final XnioWorker worker;
-
-		private final DefaultAccessLogReceiver accessLogReceiver;
-
-		AccessLogShutdownListener(XnioWorker worker, DefaultAccessLogReceiver accessLogReceiver) {
-			this.worker = worker;
-			this.accessLogReceiver = accessLogReceiver;
-		}
-
-		@Override
-		public void contextInitialized(ServletContextEvent sce) {
-		}
-
-		@Override
-		public void contextDestroyed(ServletContextEvent sce) {
-			try {
-				this.accessLogReceiver.close();
-				this.worker.shutdown();
-				this.worker.awaitTermination(30, TimeUnit.SECONDS);
-			}
-			catch (IOException ex) {
-				throw new IllegalStateException(ex);
-			}
-			catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
-		}
-
-	}
+//	private static class AccessLogShutdownListener implements ServletContextListener {
+//
+//		private final XnioWorker worker;
+//
+//		private final DefaultAccessLogReceiver accessLogReceiver;
+//
+//		AccessLogShutdownListener(XnioWorker worker, DefaultAccessLogReceiver accessLogReceiver) {
+//			this.worker = worker;
+//			this.accessLogReceiver = accessLogReceiver;
+//		}
+//
+//		@Override
+//		public void contextInitialized(ServletContextEvent sce) {
+//		}
+//
+//		@Override
+//		public void contextDestroyed(ServletContextEvent sce) {
+//			try {
+//				this.accessLogReceiver.close();
+//				this.worker.shutdown();
+//				this.worker.awaitTermination(30, TimeUnit.SECONDS);
+//			}
+//			catch (IOException ex) {
+//				throw new IllegalStateException(ex);
+//			}
+//			catch (InterruptedException ex) {
+//				Thread.currentThread().interrupt();
+//			}
+//		}
+//
+//	}
 
 }

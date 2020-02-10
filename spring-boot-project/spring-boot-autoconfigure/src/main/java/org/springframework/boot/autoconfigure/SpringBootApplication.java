@@ -31,7 +31,6 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.annotation.AliasFor;
-import org.springframework.data.repository.Repository;
 
 /**
  * Indicates a {@link Configuration configuration} class that declares one or more

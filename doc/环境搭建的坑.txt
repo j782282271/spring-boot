@@ -1,0 +1,13 @@
+1)mvn添加阿里云mirror:
+   <mirror>
+        <id>nexus-aliyun</id>
+        <mirrorOf>central</mirrorOf>
+        <name>Nexus aliyun</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+    </mirror>
+    
+2)mvn clean install -DskipTests -Pfast
+
+3)有些依赖没加进去，已加进去
+
+3）

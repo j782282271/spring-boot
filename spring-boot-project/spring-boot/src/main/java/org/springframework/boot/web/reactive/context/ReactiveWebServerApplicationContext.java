@@ -208,7 +208,8 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 
 		@Override
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
-			return this.delegate.flatMap((handler) -> handler.handle(request, response));
+//			return this.delegate.flatMap((handler) -> handler.handle(request, response));
+			return null;
 		}
 
 	}
@@ -254,8 +255,8 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 
 		static void start(ServerManager manager, Supplier<HttpHandler> handlerSupplier) {
 			if (manager != null && manager.server != null) {
-				manager.handler = manager.lazyInit ? new LazyHttpHandler(Mono.fromSupplier(handlerSupplier))
-						: handlerSupplier.get();
+//				manager.handler = manager.lazyInit ? new LazyHttpHandler(Mono.fromSupplier(handlerSupplier))
+//						: handlerSupplier.get();
 				manager.server.start();
 			}
 		}

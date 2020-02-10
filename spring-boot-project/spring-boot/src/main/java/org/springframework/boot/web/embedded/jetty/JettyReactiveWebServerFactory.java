@@ -192,13 +192,13 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	private AbstractConnector createConnector(InetSocketAddress address, Server server) {
 		ServerConnector connector;
 		JettyResourceFactory resourceFactory = getResourceFactory();
-		if (resourceFactory != null) {
-			connector = new ServerConnector(server, resourceFactory.getExecutor(), resourceFactory.getScheduler(),
-					resourceFactory.getByteBufferPool(), this.acceptors, this.selectors, new HttpConnectionFactory());
-		}
-		else {
+//		if (resourceFactory != null) {
+//			connector = new ServerConnector(server, resourceFactory.getExecutor(), resourceFactory.getScheduler(),
+//					resourceFactory.getByteBufferPool(), this.acceptors, this.selectors, new HttpConnectionFactory());
+//		}
+//		else {
 			connector = new ServerConnector(server, this.acceptors, this.selectors);
-		}
+//		}
 		connector.setHost(address.getHostString());
 		connector.setPort(address.getPort());
 		for (ConnectionFactory connectionFactory : connector.getConnectionFactories()) {

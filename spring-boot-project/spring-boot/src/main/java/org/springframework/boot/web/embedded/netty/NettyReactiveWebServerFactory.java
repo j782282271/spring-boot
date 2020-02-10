@@ -138,15 +138,15 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	private HttpServer createHttpServer() {
 		HttpServer server = HttpServer.create();
-		if (this.resourceFactory != null) {
-			LoopResources resources = this.resourceFactory.getLoopResources();
-			Assert.notNull(resources, "No LoopResources: is ReactorResourceFactory not initialized yet?");
-			server = server.tcpConfiguration(
-					(tcpServer) -> tcpServer.runOn(resources).addressSupplier(this::getListenAddress));
-		}
-		else {
+//		if (this.resourceFactory != null) {
+//			LoopResources resources = this.resourceFactory.getLoopResources();
+//			Assert.notNull(resources, "No LoopResources: is ReactorResourceFactory not initialized yet?");
+//			server = server.tcpConfiguration(
+//					(tcpServer) -> tcpServer.runOn(resources).addressSupplier(this::getListenAddress));
+//		}
+//		else {
 			server = server.tcpConfiguration((tcpServer) -> tcpServer.addressSupplier(this::getListenAddress));
-		}
+//		}
 		if (getSsl() != null && getSsl().isEnabled()) {
 			SslServerCustomizer sslServerCustomizer = new SslServerCustomizer(getSsl(), getHttp2(),
 					getSslStoreProvider());

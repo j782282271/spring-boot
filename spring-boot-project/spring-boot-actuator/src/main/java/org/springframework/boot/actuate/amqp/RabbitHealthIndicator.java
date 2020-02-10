@@ -45,8 +45,9 @@ public class RabbitHealthIndicator extends AbstractHealthIndicator {
 	}
 
 	private String getVersion() {
-		return this.rabbitTemplate
-				.execute((channel) -> channel.getConnection().getServerProperties().get("version").toString());
+		return "jiangyang";
+//		return this.rabbitTemplate
+//				.execute((channel) -> channel.getConnection().getServerProperties().get("version").toString());
 	}
 
 }

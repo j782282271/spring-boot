@@ -16,31 +16,27 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.accesslog.AccessLogHandler;
-import io.undertow.server.handlers.accesslog.DefaultAccessLogReceiver;
-import org.xnio.OptionMap;
-import org.xnio.Options;
-import org.xnio.Xnio;
-import org.xnio.XnioWorker;
-
 import org.springframework.boot.web.reactive.server.AbstractReactiveWebServerFactory;
 import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.http.server.reactive.UndertowHttpHandlerAdapter;
 import org.springframework.util.Assert;
+
+import java.io.Closeable;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+//import org.xnio.OptionMap;
+//import org.xnio.Options;
+//import org.xnio.Xnio;
+//import org.xnio.XnioWorker;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create {@link UndertowWebServer}s.
@@ -84,6 +80,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	/**
 	 * Create a new {@link UndertowReactiveWebServerFactory} that listens for requests
 	 * using the specified port.
+	 *
 	 * @param port the port to listen on
 	 */
 	public UndertowReactiveWebServerFactory(int port) {
@@ -113,8 +110,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 		}
 		if (getSsl() != null && getSsl().isEnabled()) {
 			customizeSsl(builder);
-		}
-		else {
+		} else {
 			builder.addHttpListener(port, getListenAddress());
 		}
 		for (UndertowBuilderCustomizer customizer : this.builderCustomizers) {
@@ -124,7 +120,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	}
 
 	private Closeable configureHandler(Undertow.Builder builder,
-			org.springframework.http.server.reactive.HttpHandler httpHandler) {
+									   org.springframework.http.server.reactive.HttpHandler httpHandler) {
 		HttpHandler handler = new UndertowHttpHandlerAdapter(httpHandler);
 		if (this.useForwardHeaders) {
 			handler = Handlers.proxyPeerAddress(handler);
@@ -133,40 +129,40 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 		Closeable closeable = null;
 		if (isAccessLogEnabled()) {
 			closeable = configureAccessLogHandler(builder, handler);
-		}
-		else {
+		} else {
 			builder.setHandler(handler);
 		}
 		return closeable;
 	}
 
 	private Closeable configureAccessLogHandler(Undertow.Builder builder, HttpHandler handler) {
-		try {
-			createAccessLogDirectoryIfNecessary();
-			XnioWorker worker = createWorker();
-			String prefix = (this.accessLogPrefix != null) ? this.accessLogPrefix : "access_log.";
-			DefaultAccessLogReceiver accessLogReceiver = new DefaultAccessLogReceiver(worker, this.accessLogDirectory,
-					prefix, this.accessLogSuffix, this.accessLogRotate);
-			String formatString = ((this.accessLogPattern != null) ? this.accessLogPattern : "common");
-			builder.setHandler(
-					new AccessLogHandler(handler, accessLogReceiver, formatString, Undertow.class.getClassLoader()));
-			return () -> {
-				try {
-					accessLogReceiver.close();
-					worker.shutdown();
-					worker.awaitTermination(30, TimeUnit.SECONDS);
-				}
-				catch (IOException ex) {
-					throw new IllegalStateException(ex);
-				}
-				catch (InterruptedException ex) {
-					Thread.currentThread().interrupt();
-				}
-			};
-		}
-		catch (IOException ex) {
-			throw new IllegalStateException("Failed to create AccessLogHandler", ex);
-		}
+//		try {
+//			createAccessLogDirectoryIfNecessary();
+//			XnioWorker worker = createWorker();
+//			String prefix = (this.accessLogPrefix != null) ? this.accessLogPrefix : "access_log.";
+//			DefaultAccessLogReceiver accessLogReceiver = new DefaultAccessLogReceiver(worker, this.accessLogDirectory,
+//					prefix, this.accessLogSuffix, this.accessLogRotate);
+//			String formatString = ((this.accessLogPattern != null) ? this.accessLogPattern : "common");
+//			builder.setHandler(
+//					new AccessLogHandler(handler, accessLogReceiver, formatString, Undertow.class.getClassLoader()));
+//			return () -> {
+//				try {
+//					accessLogReceiver.close();
+//					worker.shutdown();
+//					worker.awaitTermination(30, TimeUnit.SECONDS);
+//				}
+//				catch (IOException ex) {
+//					throw new IllegalStateException(ex);
+//				}
+//				catch (InterruptedException ex) {
+//					Thread.currentThread().interrupt();
+//				}
+//			};
+//		}
+//		catch (IOException ex) {
+//			throw new IllegalStateException("Failed to create AccessLogHandler", ex);
+//		}
+		return null;
 	}
 
 	private void createAccessLogDirectoryIfNecessary() {
@@ -176,15 +172,15 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 		}
 	}
 
-	private XnioWorker createWorker() throws IOException {
-		Xnio xnio = Xnio.getInstance(Undertow.class.getClassLoader());
-		return xnio.createWorker(OptionMap.builder().set(Options.THREAD_DAEMON, true).getMap());
-	}
+//	private XnioWorker createWorker() throws IOException {
+//		Xnio xnio = Xnio.getInstance(Undertow.class.getClassLoader());
+//		return xnio.createWorker(OptionMap.builder().set(Options.THREAD_DAEMON, true).getMap());
+//	}
 
 	private void customizeSsl(Undertow.Builder builder) {
 		new SslBuilderCustomizer(getPort(), getAddress(), getSsl(), getSslStoreProvider()).customize(builder);
 		if (getHttp2() != null) {
-			builder.setServerOption(UndertowOptions.ENABLE_HTTP2, getHttp2().isEnabled());
+//			builder.setServerOption(UndertowOptions.ENABLE_HTTP2, getHttp2().isEnabled());
 		}
 	}
 
@@ -262,6 +258,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	 * Set {@link UndertowBuilderCustomizer}s that should be applied to the Undertow
 	 * {@link io.undertow.Undertow.Builder Builder}. Calling this method will replace any
 	 * existing customizers.
+	 *
 	 * @param customizers the customizers to set
 	 */
 	public void setBuilderCustomizers(Collection<? extends UndertowBuilderCustomizer> customizers) {
@@ -272,6 +269,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	/**
 	 * Returns a mutable collection of the {@link UndertowBuilderCustomizer}s that will be
 	 * applied to the Undertow {@link io.undertow.Undertow.Builder Builder}.
+	 *
 	 * @return the customizers that will be applied
 	 */
 	public Collection<UndertowBuilderCustomizer> getBuilderCustomizers() {
@@ -281,6 +279,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	/**
 	 * Add {@link UndertowBuilderCustomizer}s that should be used to customize the
 	 * Undertow {@link io.undertow.Undertow.Builder Builder}.
+	 *
 	 * @param customizers the customizers to add
 	 */
 	@Override

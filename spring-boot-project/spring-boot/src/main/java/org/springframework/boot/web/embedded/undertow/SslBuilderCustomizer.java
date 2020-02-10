@@ -35,9 +35,9 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509ExtendedKeyManager;
 
 import io.undertow.Undertow;
-import org.xnio.Options;
-import org.xnio.Sequence;
-import org.xnio.SslClientAuthMode;
+//import org.xnio.Options;
+//import org.xnio.Sequence;
+//import org.xnio.SslClientAuthMode;
 
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.SslStoreProvider;
@@ -69,22 +69,22 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 
 	@Override
 	public void customize(Undertow.Builder builder) {
-		try {
-			SSLContext sslContext = SSLContext.getInstance(this.ssl.getProtocol());
-			sslContext.init(getKeyManagers(this.ssl, this.sslStoreProvider),
-					getTrustManagers(this.ssl, this.sslStoreProvider), null);
-			builder.addHttpsListener(this.port, getListenAddress(), sslContext);
-			builder.setSocketOption(Options.SSL_CLIENT_AUTH_MODE, getSslClientAuthMode(this.ssl));
-			if (this.ssl.getEnabledProtocols() != null) {
-				builder.setSocketOption(Options.SSL_ENABLED_PROTOCOLS, Sequence.of(this.ssl.getEnabledProtocols()));
-			}
-			if (this.ssl.getCiphers() != null) {
-				builder.setSocketOption(Options.SSL_ENABLED_CIPHER_SUITES, Sequence.of(this.ssl.getCiphers()));
-			}
-		}
-		catch (NoSuchAlgorithmException | KeyManagementException ex) {
-			throw new IllegalStateException(ex);
-		}
+//		try {
+//			SSLContext sslContext = SSLContext.getInstance(this.ssl.getProtocol());
+//			sslContext.init(getKeyManagers(this.ssl, this.sslStoreProvider),
+//					getTrustManagers(this.ssl, this.sslStoreProvider), null);
+//			builder.addHttpsListener(this.port, getListenAddress(), sslContext);
+//			builder.setSocketOption(Options.SSL_CLIENT_AUTH_MODE, getSslClientAuthMode(this.ssl));
+//			if (this.ssl.getEnabledProtocols() != null) {
+//				builder.setSocketOption(Options.SSL_ENABLED_PROTOCOLS, Sequence.of(this.ssl.getEnabledProtocols()));
+//			}
+//			if (this.ssl.getCiphers() != null) {
+//				builder.setSocketOption(Options.SSL_ENABLED_CIPHER_SUITES, Sequence.of(this.ssl.getCiphers()));
+//			}
+//		}
+//		catch (NoSuchAlgorithmException | KeyManagementException ex) {
+//			throw new IllegalStateException(ex);
+//		}
 	}
 
 	private String getListenAddress() {
@@ -94,15 +94,15 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 		return this.address.getHostAddress();
 	}
 
-	private SslClientAuthMode getSslClientAuthMode(Ssl ssl) {
-		if (ssl.getClientAuth() == Ssl.ClientAuth.NEED) {
-			return SslClientAuthMode.REQUIRED;
-		}
-		if (ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
-			return SslClientAuthMode.REQUESTED;
-		}
-		return SslClientAuthMode.NOT_REQUESTED;
-	}
+//	private SslClientAuthMode getSslClientAuthMode(Ssl ssl) {
+//		if (ssl.getClientAuth() == Ssl.ClientAuth.NEED) {
+//			return SslClientAuthMode.REQUIRED;
+//		}
+//		if (ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
+//			return SslClientAuthMode.REQUESTED;
+//		}
+//		return SslClientAuthMode.NOT_REQUESTED;
+//	}
 
 	private KeyManager[] getKeyManagers(Ssl ssl, SslStoreProvider sslStoreProvider) {
 		try {

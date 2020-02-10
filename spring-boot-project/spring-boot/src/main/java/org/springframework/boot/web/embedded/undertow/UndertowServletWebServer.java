@@ -32,7 +32,7 @@ import io.undertow.server.HttpHandler;
 import io.undertow.servlet.api.DeploymentManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xnio.channels.BoundChannel;
+//import org.xnio.channels.BoundChannel;
 
 import org.springframework.boot.web.server.Compression;
 import org.springframework.boot.web.server.PortInUseException;
@@ -222,37 +222,37 @@ public class UndertowServletWebServer implements WebServer {
 
 	private List<Port> getActualPorts() {
 		List<Port> ports = new ArrayList<>();
-		try {
-			if (!this.autoStart) {
-				ports.add(new Port(-1, "unknown"));
-			}
-			else {
-				for (BoundChannel channel : extractChannels()) {
-					ports.add(getPortFromChannel(channel));
-				}
-			}
-		}
-		catch (Exception ex) {
-			// Continue
-		}
+//		try {
+//			if (!this.autoStart) {
+//				ports.add(new Port(-1, "unknown"));
+//			}
+//			else {
+//				for (BoundChannel channel : extractChannels()) {
+//					ports.add(getPortFromChannel(channel));
+//				}
+//			}
+//		}
+//		catch (Exception ex) {
+//			// Continue
+//		}
 		return ports;
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<BoundChannel> extractChannels() {
-		Field channelsField = ReflectionUtils.findField(Undertow.class, "channels");
-		ReflectionUtils.makeAccessible(channelsField);
-		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
-	}
+//	private List<BoundChannel> extractChannels() {
+//		Field channelsField = ReflectionUtils.findField(Undertow.class, "channels");
+//		ReflectionUtils.makeAccessible(channelsField);
+//		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
+//	}
 
-	private Port getPortFromChannel(BoundChannel channel) {
-		SocketAddress socketAddress = channel.getLocalAddress();
-		if (socketAddress instanceof InetSocketAddress) {
-			String protocol = (ReflectionUtils.findField(channel.getClass(), "ssl") != null) ? "https" : "http";
-			return new Port(((InetSocketAddress) socketAddress).getPort(), protocol);
-		}
-		return null;
-	}
+//	private Port getPortFromChannel(BoundChannel channel) {
+//		SocketAddress socketAddress = channel.getLocalAddress();
+//		if (socketAddress instanceof InetSocketAddress) {
+//			String protocol = (ReflectionUtils.findField(channel.getClass(), "ssl") != null) ? "https" : "http";
+//			return new Port(((InetSocketAddress) socketAddress).getPort(), protocol);
+//		}
+//		return null;
+//	}
 
 	private List<Port> getConfiguredPorts() {
 		List<Port> ports = new ArrayList<>();

@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.reactor;
+package org.springframework.boot.test.tomcat.service;
 
-import reactor.core.publisher.Flux;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-/**
- * Utility class that should be instrumented by the reactor debug agent.
- *
- * @author Brian Clozel
- * @see DebugAgentEnvironmentPostProcessorTests
- */
-class InstrumentedFluxProvider {
+@Component
+public class HelloWorldService {
 
-	Flux<Integer> newFluxJust() {
-		return Flux.just(1);
+	@Value("${name:World}")
+	private String name;
+
+	public String getHelloMessage() {
+		return "Hello " + this.name;
 	}
 
 }

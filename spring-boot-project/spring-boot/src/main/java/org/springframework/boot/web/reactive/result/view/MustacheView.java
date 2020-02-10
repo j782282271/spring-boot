@@ -78,8 +78,8 @@ public class MustacheView extends AbstractUrlBasedView {
 	protected Mono<Void> renderInternal(Map<String, Object> model, MediaType contentType, ServerWebExchange exchange) {
 		Resource resource = resolveResource();
 		if (resource == null) {
-			return Mono
-					.error(new IllegalStateException("Could not find Mustache template with URL [" + getUrl() + "]"));
+//			return Mono
+//					.error(new IllegalStateException("Could not find Mustache template with URL [" + getUrl() + "]"));
 		}
 		DataBuffer dataBuffer = exchange.getResponse().bufferFactory().allocateBuffer();
 		try (Reader reader = getReader(resource)) {
@@ -91,10 +91,11 @@ public class MustacheView extends AbstractUrlBasedView {
 			}
 		}
 		catch (Exception ex) {
-			DataBufferUtils.release(dataBuffer);
-			return Mono.error(ex);
+//			DataBufferUtils.release(dataBuffer);
+//			return Mono.error(ex);
 		}
-		return exchange.getResponse().writeWith(Flux.just(dataBuffer));
+//		return exchange.getResponse().writeWith(Flux.just(dataBuffer));
+		return null;
 	}
 
 	private Resource resolveResource() {

@@ -93,12 +93,12 @@ public class NettyWebServer implements WebServer {
 
 	private DisposableServer startHttpServer() {
 		HttpServer server = this.httpServer;
-		if (this.routeProviders.isEmpty()) {
-			server = server.handle(this.handlerAdapter);
-		}
-		else {
+//		if (this.routeProviders.isEmpty()) {
+//			server = server.handle(this.handlerAdapter);
+//		}
+//		else {
 			server = server.route(this::applyRouteProviders);
-		}
+//		}
 		if (this.lifecycleTimeout != null) {
 			return server.bindNow(this.lifecycleTimeout);
 		}
@@ -109,7 +109,7 @@ public class NettyWebServer implements WebServer {
 		for (NettyRouteProvider provider : this.routeProviders) {
 			routes = provider.apply(routes);
 		}
-		routes.route(ALWAYS, this.handlerAdapter);
+//		routes.route(ALWAYS, this.handlerAdapter);
 	}
 
 	private ChannelBindException findBindException(Exception ex) {
@@ -128,7 +128,7 @@ public class NettyWebServer implements WebServer {
 
 			@Override
 			public void run() {
-				disposableServer.onDispose().block();
+//				disposableServer.onDispose().block();
 			}
 
 		};

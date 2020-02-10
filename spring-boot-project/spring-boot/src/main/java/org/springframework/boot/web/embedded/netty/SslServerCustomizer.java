@@ -36,8 +36,8 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509ExtendedKeyManager;
 
-import io.netty.handler.ssl.ClientAuth;
-import io.netty.handler.ssl.SslContextBuilder;
+//import io.netty.handler.ssl.ClientAuth;
+//import io.netty.handler.ssl.SslContextBuilder;
 import reactor.netty.http.server.HttpServer;
 import reactor.netty.tcp.SslProvider;
 
@@ -73,35 +73,36 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 	@Override
 	public HttpServer apply(HttpServer server) {
 		try {
-			return server.secure((contextSpec) -> {
-				SslProvider.DefaultConfigurationSpec spec = contextSpec.sslContext(getContextBuilder());
-				if (this.http2 != null && this.http2.isEnabled()) {
-					spec.defaultConfiguration(SslProvider.DefaultConfigurationType.H2);
-				}
-			});
+//			return server.secure((contextSpec) -> {
+//				SslProvider.DefaultConfigurationSpec spec = contextSpec.sslContext(getContextBuilder());
+//				if (this.http2 != null && this.http2.isEnabled()) {
+//					spec.defaultConfiguration(SslProvider.DefaultConfigurationType.H2);
+//				}
+//			});
+			return null;
 		}
 		catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
 
-	protected SslContextBuilder getContextBuilder() {
-		SslContextBuilder builder = SslContextBuilder.forServer(getKeyManagerFactory(this.ssl, this.sslStoreProvider))
-				.trustManager(getTrustManagerFactory(this.ssl, this.sslStoreProvider));
-		if (this.ssl.getEnabledProtocols() != null) {
-			builder.protocols(this.ssl.getEnabledProtocols());
-		}
-		if (this.ssl.getCiphers() != null) {
-			builder.ciphers(Arrays.asList(this.ssl.getCiphers()));
-		}
-		if (this.ssl.getClientAuth() == Ssl.ClientAuth.NEED) {
-			builder.clientAuth(ClientAuth.REQUIRE);
-		}
-		else if (this.ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
-			builder.clientAuth(ClientAuth.OPTIONAL);
-		}
-		return builder;
-	}
+//	protected SslContextBuilder getContextBuilder() {
+//		SslContextBuilder builder = SslContextBuilder.forServer(getKeyManagerFactory(this.ssl, this.sslStoreProvider))
+//				.trustManager(getTrustManagerFactory(this.ssl, this.sslStoreProvider));
+//		if (this.ssl.getEnabledProtocols() != null) {
+//			builder.protocols(this.ssl.getEnabledProtocols());
+//		}
+//		if (this.ssl.getCiphers() != null) {
+//			builder.ciphers(Arrays.asList(this.ssl.getCiphers()));
+//		}
+//		if (this.ssl.getClientAuth() == Ssl.ClientAuth.NEED) {
+//			builder.clientAuth(ClientAuth.REQUIRE);
+//		}
+//		else if (this.ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
+//			builder.clientAuth(ClientAuth.OPTIONAL);
+//		}
+//		return builder;
+//	}
 
 	protected KeyManagerFactory getKeyManagerFactory(Ssl ssl, SslStoreProvider sslStoreProvider) {
 		try {

@@ -27,7 +27,7 @@ import java.util.List;
 import io.undertow.Undertow;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xnio.channels.BoundChannel;
+//import org.xnio.channels.BoundChannel;
 
 import org.springframework.boot.web.server.PortInUseException;
 import org.springframework.boot.web.server.WebServer;
@@ -153,39 +153,39 @@ public class UndertowWebServer implements WebServer {
 	}
 
 	private List<UndertowWebServer.Port> getActualPorts() {
-		List<UndertowWebServer.Port> ports = new ArrayList<>();
-		try {
-			if (!this.autoStart) {
-				ports.add(new UndertowWebServer.Port(-1, "unknown"));
-			}
-			else {
-				for (BoundChannel channel : extractChannels()) {
-					ports.add(getPortFromChannel(channel));
-				}
-			}
-		}
-		catch (Exception ex) {
-			// Continue
-		}
-		return ports;
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<BoundChannel> extractChannels() {
-		Field channelsField = ReflectionUtils.findField(Undertow.class, "channels");
-		ReflectionUtils.makeAccessible(channelsField);
-		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
-	}
-
-	private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
-		SocketAddress socketAddress = channel.getLocalAddress();
-		if (socketAddress instanceof InetSocketAddress) {
-			Field sslField = ReflectionUtils.findField(channel.getClass(), "ssl");
-			String protocol = (sslField != null) ? "https" : "http";
-			return new UndertowWebServer.Port(((InetSocketAddress) socketAddress).getPort(), protocol);
-		}
+//		List<UndertowWebServer.Port> ports = new ArrayList<>();
+//		try {
+//			if (!this.autoStart) {
+//				ports.add(new UndertowWebServer.Port(-1, "unknown"));
+//			}
+//			else {
+//				for (BoundChannel channel : extractChannels()) {
+//					ports.add(getPortFromChannel(channel));
+//				}
+//			}
+//		}
+//		catch (Exception ex) {
+//			// Continue
+//		}
 		return null;
 	}
+
+//	@SuppressWarnings("unchecked")
+//	private List<BoundChannel> extractChannels() {
+//		Field channelsField = ReflectionUtils.findField(Undertow.class, "channels");
+//		ReflectionUtils.makeAccessible(channelsField);
+//		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
+//	}
+
+//	private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
+//		SocketAddress socketAddress = channel.getLocalAddress();
+//		if (socketAddress instanceof InetSocketAddress) {
+//			Field sslField = ReflectionUtils.findField(channel.getClass(), "ssl");
+//			String protocol = (sslField != null) ? "https" : "http";
+//			return new UndertowWebServer.Port(((InetSocketAddress) socketAddress).getPort(), protocol);
+//		}
+//		return null;
+//	}
 
 	private List<UndertowWebServer.Port> getConfiguredPorts() {
 		List<UndertowWebServer.Port> ports = new ArrayList<>();

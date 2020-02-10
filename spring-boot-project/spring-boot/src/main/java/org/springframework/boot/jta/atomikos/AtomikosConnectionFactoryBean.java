@@ -22,6 +22,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 
+import javax.jms.JMSContext;
+
 /**
  * Spring friendly version of {@link com.atomikos.jms.AtomikosConnectionFactoryBean}.
  *
@@ -54,4 +56,23 @@ public class AtomikosConnectionFactoryBean extends com.atomikos.jms.AtomikosConn
 		close();
 	}
 
+	@Override
+	public JMSContext createContext() {
+		return null;
+	}
+
+	@Override
+	public JMSContext createContext(String s, String s1) {
+		return null;
+	}
+
+	@Override
+	public JMSContext createContext(String s, String s1, int i) {
+		return null;
+	}
+
+	@Override
+	public JMSContext createContext(int i) {
+		return null;
+	}
 }

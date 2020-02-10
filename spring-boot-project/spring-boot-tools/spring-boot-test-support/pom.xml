@@ -19,6 +19,11 @@
 		<developerConnection>${git.developerConnection}</developerConnection>
 	</scm>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.testcontainers/testcontainers -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+		</dependency>
 		<!-- Compile -->
 		<dependency>
 			<groupId>org.apache.maven.resolver</groupId>

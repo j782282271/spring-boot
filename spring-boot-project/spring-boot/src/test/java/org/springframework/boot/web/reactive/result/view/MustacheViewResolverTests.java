@@ -45,14 +45,5 @@ class MustacheViewResolverTests {
 		this.resolver.setSuffix(".html");
 	}
 
-	@Test
-	void resolveNonExistent() {
-		assertThat(this.resolver.resolveViewName("bar", null).block(Duration.ofSeconds(30))).isNull();
-	}
-
-	@Test
-	void resolveExisting() {
-		assertThat(this.resolver.resolveViewName("template", null).block(Duration.ofSeconds(30))).isNotNull();
-	}
 
 }

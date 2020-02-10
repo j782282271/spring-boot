@@ -67,10 +67,10 @@ public class NettyRSocketServer implements RSocketServer {
 	}
 
 	private void startDaemonAwaitThread(CloseableChannel channel) {
-		Thread awaitThread = new Thread(() -> channel.onClose().block(), "rsocket");
-		awaitThread.setContextClassLoader(getClass().getClassLoader());
-		awaitThread.setDaemon(false);
-		awaitThread.start();
+//		Thread awaitThread = new Thread(() -> channel.onClose().block(), "rsocket");
+//		awaitThread.setContextClassLoader(getClass().getClassLoader());
+//		awaitThread.setDaemon(false);
+//		awaitThread.start();
 	}
 
 	@Override
@@ -82,7 +82,8 @@ public class NettyRSocketServer implements RSocketServer {
 	}
 
 	private <T> T block(Mono<T> mono, Duration timeout) {
-		return (timeout != null) ? mono.block(timeout) : mono.block();
+//		return (timeout != null) ? mono.block(timeout) : mono.block();
+		return null;
 	}
 
 }
