@@ -6,11 +6,21 @@
  * If you are not the intended user, you are hereby notified that any use, disclosure, copying, printing, forwarding or
  * dissemination of this property is strictly prohibited. If you have got this file in error, delete it from your system.
  */
-package org.springframework.boot.tests.hibernate52.controller;
+package org.springframework.boot.mytest.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by za-jiangyang on 2020/10/24.
  */
 
-public class controller {
+@RestController
+@RequestMapping("/test")
+public class MyTestController {
+
+	@RequestMapping("/hello")
+	public String hello() {
+		return "hello world";
+	}
 }
