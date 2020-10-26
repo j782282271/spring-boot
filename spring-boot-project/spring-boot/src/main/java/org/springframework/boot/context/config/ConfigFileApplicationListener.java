@@ -304,6 +304,7 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor, 
 			this.environment = environment;
 			this.placeholdersResolver = new PropertySourcesPlaceholdersResolver(this.environment);
 			this.resourceLoader = (resourceLoader != null) ? resourceLoader : new DefaultResourceLoader();
+			// 文件application配置文件的资源加载器，包括properties/xml/yml/yaml扩展名
 			this.propertySourceLoaders = SpringFactoriesLoader.loadFactories(PropertySourceLoader.class,
 					getClass().getClassLoader());
 		}
@@ -313,17 +314,24 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor, 
 			this.processedProfiles = new LinkedList<>();
 			this.activatedProfiles = false;
 			this.loaded = new LinkedHashMap<>();
+			// 初始化profiles
 			initializeProfiles();
 			while (!this.profiles.isEmpty()) {
+				// 消费一个profile
 				Profile profile = this.profiles.poll();
+				// active的profile添加到Environment
 				if (profile != null && !profile.isDefaultProfile()) {
 					addProfileToEnvironment(profile.getName());
 				}
+				// 加载
 				load(profile, this::getPositiveProfileFilter, addToLoaded(MutablePropertySources::addLast, false));
 				this.processedProfiles.add(profile);
 			}
+			// 重置Environment中的profiles
 			resetEnvironmentProfiles(this.processedProfiles);
+			// 加载
 			load(null, this::getNegativeProfileFilter, addToLoaded(MutablePropertySources::addFirst, true));
+			// 添加所有properties到Environment中
 			addLoadedPropertySources();
 		}
 
@@ -333,14 +341,20 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor, 
 		 * properties that are already set.
 		 */
 		private void initializeProfiles() {
+			// 第一个profile为null，这样能保证首个加载application.properties/yml
 			// The default profile for these purposes is represented as null. We add it
 			// first so that it is processed first and has lowest priority.
 			this.profiles.add(null);
+//			其次，如果没有配置profile，那么使用default。
+//			注意，我们的application配置文件还未加载，所以这里的"没有配置"并不是指你的application配置文件中有没有配置，
+//			而是如命令行、获取main方法传入等其它方法配置
+//			我们并未配置任何active的profile，所以这里最终将产生一个这样的数据:profiles=[null, "default"]
 			Set<Profile> activatedViaProperty = getProfilesActivatedViaProperty();
 			this.profiles.addAll(getOtherActiveProfiles(activatedViaProperty));
 			// Any pre-existing active profiles set via property sources (e.g.
 			// System properties) take precedence over those added in config files.
 			addActiveProfiles(activatedViaProperty);
+			// 没有额外配置profile的时候，将使用默认的
 			if (this.profiles.size() == 1) { // only has null profile
 				for (String defaultProfileName : this.environment.getDefaultProfiles()) {
 					Profile defaultProfile = new Profile(defaultProfileName, true);
@@ -420,9 +434,12 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor, 
 		}
 
 		private void load(Profile profile, DocumentFilterFactory filterFactory, DocumentConsumer consumer) {
+			// 获取并遍历所有待搜索的位置
 			getSearchLocations().forEach((location) -> {
 				boolean isFolder = location.endsWith("/");
+				// 获取所有待加载的配置文件名
 				Set<String> names = isFolder ? getSearchNames() : NO_SEARCH_NAMES;
+				// 加载每个位置的每个文件
 				names.forEach((name) -> load(location, name, profile, filterFactory, consumer));
 			});
 		}
